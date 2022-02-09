@@ -39,11 +39,8 @@ class SuperheroServiceTest {
 		
 		when(repository.findById(1L)).thenReturn(founded);
 		
-		//SuperheroDto lukeDto = new SuperheroDto("Luke Skywalker", 172, 77, Gender.MALE, Specie.HUMAN);
-		
 		SuperheroDto foundedDto = service.findById(1L);
 		
 		assertThat(foundedDto.getName()).isNotNull();
-		
 	}
 }
