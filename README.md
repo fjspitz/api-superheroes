@@ -20,6 +20,11 @@ Los héroes incluídos en la base de datos de prueba del proyecto son:
 - Yoda
 - Palpatine
 
+## Ejecución en ambiente local
+
+Para acceder a la documentación del API mediante Open API 3 se puede acceder a [éste](http://localhost:8080/swagger-ui.html) link.
+
+
 ## Tecnologías
 
 - Springboot
