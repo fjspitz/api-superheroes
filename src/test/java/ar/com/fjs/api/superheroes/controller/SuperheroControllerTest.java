@@ -46,7 +46,6 @@ class SuperheroControllerTest {
 	@Autowired
 	private ObjectMapper mapper;
 
-	//@Autowired
     private MockMvc mvc;
 	
 	@MockBean
