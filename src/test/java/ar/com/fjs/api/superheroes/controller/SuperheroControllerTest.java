@@ -3,6 +3,7 @@ package ar.com.fjs.api.superheroes.controller;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -13,14 +14,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,22 +37,34 @@ import ar.com.fjs.api.superheroes.model.Specie;
 import ar.com.fjs.api.superheroes.service.SuperheroService;
 
 @DisplayName("Web layer testing")
-@WebMvcTest
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class SuperheroControllerTest {
+	
+	@Autowired
+    private WebApplicationContext context;
 	
 	@Autowired
 	private ObjectMapper mapper;
 
-	@Autowired
+	//@Autowired
     private MockMvc mvc;
 	
 	@MockBean
     private SuperheroService service;
 	
+	@BeforeEach
+    public void setup() {
+        mvc = MockMvcBuilders
+          .webAppContextSetup(context)
+          .apply(springSecurity())
+          .build();
+    }
+	
 	@DisplayName("Single response tests")
 	@Nested
 	class SingleResponse {
 	
+		@WithMockUser(username="user", password = "password")
 		@DisplayName("Should return 200 and Luke Skywalker hero when searched by ID")
 		@Test
 		void shouldReturn200AndLukeSkywalkerHeroWhenSearchedByID() throws Exception {
@@ -66,6 +84,7 @@ class SuperheroControllerTest {
 				.andExpect(jsonPath("$.data[0].specie").value("HUMAN"));
 		}
 		
+		@WithMockUser(username="user", password = "password")
 		@DisplayName("Should return 404 if the hero searched does not exists")
 		@Test
 		void shouldReturn404IfHeroSearchedDoesNotExists() throws Exception {
@@ -76,6 +95,7 @@ class SuperheroControllerTest {
 				.andExpect(status().isNotFound());
 		}
 		
+		@WithMockUser(username="user", password = "password")
 		@DisplayName("Should return 400 if ID or name parameter for the search is not valid")
 		@Test
 		void shouldReturn400IfParametersAreInvalidOrIllegal() throws Exception {
@@ -84,6 +104,7 @@ class SuperheroControllerTest {
 				.andExpect(status().isBadRequest());
 		}
 		
+		@WithMockUser(username="user", password = "password")
 		@DisplayName("Should return 200 when hero is updated")
 		@Test
 		void shouldReturn200WhenHeroIsUpdated() throws Exception {
@@ -105,6 +126,7 @@ class SuperheroControllerTest {
 				.andExpect(jsonPath("$.data[0].specie").value("HUMAN"));
 		}
 		
+		@WithMockUser(username="user", password = "password")
 		@DisplayName("Should return 201 when hero is created")
 		@Test
 		void shouldReturn201WhenHeroIsCreated() throws Exception {
@@ -138,6 +160,7 @@ class SuperheroControllerTest {
 	@Nested
 	class MultipleResponse {
 		
+		@WithMockUser(username="user", password = "password")
 		@DisplayName("Should return 200 and two heroes when searched by 'Skywalker'")
 		@Test
 		void shouldReturnTwoHeroesWhenNamesMatch() throws Exception {
@@ -165,6 +188,7 @@ class SuperheroControllerTest {
 				.andExpect(jsonPath("$.data[1].specie").value("HUMAN"));
 		}
 		
+		@WithMockUser(username="user", password = "password")
 		@DisplayName("Should return 200 and an empty list if search was unsatisfactory")
 		@Test
 		void shouldReturn200AndAnEmptyListWhenNotFound() throws Exception {

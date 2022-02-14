@@ -22,8 +22,38 @@ Los héroes incluídos en la base de datos de prueba del proyecto son:
 
 ## Ejecución en ambiente local
 
-Para acceder a la documentación del API mediante Open API 3 se puede acceder a [éste](http://localhost:8080/swagger-ui.html) link.
+### Crear la imagen
 
+Desde el directorio raíz de la aplicación ejecutar:
+```
+DOCKER_BUILDKIT=1 docker build -t api-superheroes .
+```
+
+Se utiliza **Buildkit** para optimizar los tiempos de generación de las imágenes. 
+
+### Ejecutar la aplicación
+
+```
+docker run --rm -d -p 8080:8080 --name api-superheroes api-superheroes:latest
+```
+
+### Seguridad
+
+Para este ejemplo se implementa mediante **Spring Security** seguridad básica para el API mediante un harcodeo. 
+
+Claramente no es un mecanismo para apis productivas, pero lo uso acá para simplificar el ejemplo. De hecho, se especifica la opción **noop** para no encriptar la password para facilitar las pruebas.
+
+```
+user: user
+pwd: password
+```
+Ejemplo:
+
+```
+curl -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" http://localhost:8080/api/superheroes | jq
+```
+
+Para acceder a la documentación del API mediante Open API 3 se puede acceder a [éste](http://localhost:8080/swagger-ui.html) link.
 
 ## Tecnologías
 
@@ -33,3 +63,5 @@ Para acceder a la documentación del API mediante Open API 3 se puede acceder a 
 - Flyway
 - Lombok
 - Spring Cache
+- Spring Security
+- jq
