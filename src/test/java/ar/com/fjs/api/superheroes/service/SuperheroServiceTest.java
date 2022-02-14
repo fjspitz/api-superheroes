@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.cache.CacheManager;
 
 import ar.com.fjs.api.superheroes.dto.SuperheroDto;
 import ar.com.fjs.api.superheroes.exception.SuperheroNotFoundException;
@@ -32,14 +31,11 @@ class SuperheroServiceTest {
 	@Mock
 	private SuperheroRepository repository;
 	
-	@Mock
-	private CacheManager cacheManager;
-	
 	private SuperheroService service;
 	
 	@BeforeEach
 	void init() {
-		service = new SuperheroServiceImpl(repository, cacheManager);
+		service = new SuperheroServiceImpl(repository);
 	}
 	
 	@Test
@@ -95,6 +91,7 @@ class SuperheroServiceTest {
 		
 		when(repository.findById(1L)).thenReturn(originalHero);
 		when(repository.saveAndFlush(modifiedHero)).thenReturn(modifiedHero);
+		//doNothing().when(cacheManager).getCache("superheroes").evict(modifiedHero);
 		
 		SuperheroDto result = service.update(1L, modifiedHeroDto);
 		

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +24,6 @@ public class SuperheroServiceImpl implements SuperheroService {
 
 	@Autowired
 	private final SuperheroRepository superheroRepository;
-	
-	@Autowired
-	private final CacheManager cacheManager;
 	
 	@Cacheable("superheroes")
 	@Transactional(readOnly = true)
@@ -95,8 +91,6 @@ public class SuperheroServiceImpl implements SuperheroService {
 		modified.setSpecie(dto.getSpecie());
 		
 		modified = superheroRepository.saveAndFlush(modified);
-		
-		cacheManager.getCache("superheroes").evict(modified);
 			
 		return new SuperheroDto(modified.getName(), modified.getHeight(), modified.getMass(), modified.getGender(), modified.getSpecie());
 	}
@@ -113,8 +107,6 @@ public class SuperheroServiceImpl implements SuperheroService {
 		created.setSpecie(dto.getSpecie());
 		
 		superheroRepository.saveAndFlush(created);
-		
-		cacheManager.getCache("superheroes").clear();
 		
 		return dto;
 	}
