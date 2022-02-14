@@ -126,6 +126,7 @@
 							<excludes>
 								<exclude>**/ApiSuperheroesApplication.class</exclude>
 								<exclude>ar/com/fjs/api/superheroes/model/**/*.class</exclude>
+								<exclude>src/test/java/ar/com/fjs/api/superheroes/**/*.class</exclude>
 							</excludes>
 							<rules>
 								<rule>

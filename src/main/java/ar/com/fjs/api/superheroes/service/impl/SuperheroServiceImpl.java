@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.fjs.api.superheroes.dto.SuperheroDto;
 import ar.com.fjs.api.superheroes.exception.SuperheroNotFoundException;
@@ -25,6 +26,11 @@ public class SuperheroServiceImpl implements SuperheroService {
 	@Autowired
 	private final SuperheroRepository superheroRepository;
 	
+	@Autowired
+	private final CacheManager cacheManager;
+	
+	@Cacheable("superheroes")
+	@Transactional(readOnly = true)
 	@Override
 	public SuperheroDto findById(long id) throws SuperheroNotFoundException {
 		
@@ -45,15 +51,18 @@ public class SuperheroServiceImpl implements SuperheroService {
 		return dto;
 	}
 
+	@Cacheable(value = "superheroes", unless = "#name != ''")
+	@Transactional(readOnly = true)
 	@Override
 	public List<SuperheroDto> findAll(String name) {
 		
-		log.info("findAll by name: {}", name);
-		
 		List<Superhero> heroesList;
+		
 		if (!name.isBlank()) {
+			log.info("findAll by name: {}", name);
 			heroesList = superheroRepository.findByNameContainingIgnoreCase(name);
 		} else {
+			log.info("findAll");
 			heroesList = superheroRepository.findAll();
 		}
 		
@@ -86,6 +95,8 @@ public class SuperheroServiceImpl implements SuperheroService {
 		modified.setSpecie(dto.getSpecie());
 		
 		modified = superheroRepository.saveAndFlush(modified);
+		
+		cacheManager.getCache("superheroes").evict(modified);
 			
 		return new SuperheroDto(modified.getName(), modified.getHeight(), modified.getMass(), modified.getGender(), modified.getSpecie());
 	}
@@ -103,7 +114,8 @@ public class SuperheroServiceImpl implements SuperheroService {
 		
 		superheroRepository.saveAndFlush(created);
 		
+		cacheManager.getCache("superheroes").clear();
+		
 		return dto;
 	}
-
 }

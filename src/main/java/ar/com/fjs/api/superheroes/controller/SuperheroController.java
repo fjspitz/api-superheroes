@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.com.fjs.api.superheroes.aop.TrackExecutionTime;
 import ar.com.fjs.api.superheroes.dto.DataResponseBody;
 import ar.com.fjs.api.superheroes.dto.SuperheroDto;
 import ar.com.fjs.api.superheroes.exception.SuperheroNotFoundException;
@@ -31,6 +32,7 @@ public class SuperheroController {
 	private SuperheroService superheroService;
 
 	@GetMapping("/{id}")
+	@TrackExecutionTime
 	public ResponseEntity<DataResponseBody> getAllSuperheroes(@PathVariable("id") long id) 
 			throws SuperheroNotFoundException {
 		
@@ -45,6 +47,7 @@ public class SuperheroController {
 	}
 	
 	@GetMapping
+	@TrackExecutionTime
 	public ResponseEntity<DataResponseBody> getAllSuperheroes(
 			@RequestParam(name = "name", required = false, defaultValue = "") String name) 
 			throws SuperheroNotFoundException {
@@ -60,6 +63,7 @@ public class SuperheroController {
 	}
 
 	@PutMapping("/{id}")
+	@TrackExecutionTime
 	public ResponseEntity<DataResponseBody> updateHero(@PathVariable("id") long id, 
 			@RequestBody SuperheroDto superhero) throws SuperheroNotFoundException {
 		log.info("Find superheroe by ID: {}", id);
@@ -73,6 +77,7 @@ public class SuperheroController {
 	}
 	
 	@PostMapping
+	@TrackExecutionTime
 	public ResponseEntity<DataResponseBody> createHero( 
 			@RequestBody SuperheroDto superhero) throws SuperheroNotFoundException {
 		log.info("Creating superheroe");
