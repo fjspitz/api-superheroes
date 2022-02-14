@@ -2,6 +2,12 @@
 ![Spring](https://img.shields.io/badge/SPRING--BOOT-2.6.3-blue)
 ![Gradle](https://img.shields.io/badge/MAVEN-3-blue)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_api-superheroes&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fjspitz_api-superheroes)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_api-superheroes&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fjspitz_api-superheroes)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_api-superheroes&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fjspitz_api-superheroes)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_api-superheroes&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=fjspitz_api-superheroes)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_api-superheroes&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=fjspitz_api-superheroes)
+
 # Star Wars Heroes! API
 
 Este proyecto de prueba esta basado en la API de héroes sobre el universo de **Star Wars** para tomar algunos datos de muestra y popular la base. Más información [aquí](https://swapi.dev/).
@@ -57,6 +63,7 @@ Para acceder a la documentación del API mediante Open API 3 se puede acceder a 
 
 ## Tecnologías
 
+- Docker 20.10.7
 - Springboot
 - Spring Data JPA
 - H2 database
@@ -65,3 +72,7 @@ Para acceder a la documentación del API mediante Open API 3 se puede acceder a 
 - Spring Cache
 - Spring Security
 - jq
+
+
+---
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=fjspitz_api-superheroes)
