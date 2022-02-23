@@ -62,6 +62,14 @@ class SuperheroControllerTest {
 	@DisplayName("Single response tests")
 	@Nested
 	class SingleResponse {
+		
+		@DisplayName("Should return 401 when user is not authenticated")
+		@Test
+		void shouldReturn401WhenNotAuthenticated() throws Exception {
+			mvc.perform(get("/api/superheroes/1")
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnauthorized());
+		}
 	
 		@WithMockUser(username="user", password = "password")
 		@DisplayName("Should return 200 and Luke Skywalker hero when searched by ID")
