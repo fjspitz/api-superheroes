@@ -4,7 +4,7 @@ COPY . /project
 WORKDIR /project
 RUN mvn clean package -DskipTests
  
-FROM adoptopenjdk/openjdk11:alpine
+FROM adoptopenjdk/openjdk11:alpine-jre
 RUN apk add dumb-init
 RUN mkdir /app
 RUN addgroup --system javauser && adduser -S -s /bin/false -G javauser javauser
